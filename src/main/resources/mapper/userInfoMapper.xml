@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.miaoshacd.dao.UserDao">
+
+    <resultMap id="selectUserInfoByUserNameMap" type="userinfo">    <!--mybatis在使用XML配置时，可以通过<resultMap>标签组定义定义结果映射集 -->
+        <id column="user_id" property="userId"></id>
+        <result column="user_name" property="userName"></result>
+        <result column="user_pwd" property="userPwd"></result>
+        <!--<result column="user_email" property="userEmail"></result>-->
+        <result column="regist_time" property="registTime"></result>
+        <result column="last_login_time" property="lastLoginTime"></result>
+
+    </resultMap>
+
+
+    <select id="selectUserInfoByUserName" parameterType="string" resultMap="selectUserInfoByUserNameMap">
+        <!--select user_id,user_name,user_pwd,user_email,regist_time,last_login_time from userinfo where user_name='xxx'-->
+        select user_id,user_name,user_pwd,user_email,regist_time,last_login_time from userinfo where user_name=#{userName}
+    </select>
+
+    <insert id="insertUser" parameterType="userInfo">
+        insert into userinfo(user_name,user_pwd,user_email,regist_time,last_login_time) values (#{userName},#{userPwd},#{userEmail},now(),now())
+    </insert>
+
+    <select id="findByUserNameAndPassword" parameterType="userInfo" resultMap="selectUserInfoByUserNameMap">
+        <!--select user_id,user_name,user_pwd,user_email,regist_time,last_login_time from userinfo where user_name='xxx'-->
+        select user_id,user_name,user_pwd,user_email,regist_time,last_login_time from userinfo where user_name=#{userName} and user_pwd=#{userPwd}
+    </select>
+
+    <update id="updatePwd" parameterType="userInfo" >
+        update userinfo set user_pwd =#{userPwd} where user_name=#{userName}
+    </update>
+
+    <delete id="deleteUserByUserNameAndPassword" parameterType="userInfo" >
+        delete from userinfo where user_name=#{userName} and user_Pwd = #{userPwd}
+    </delete>
+</mapper>

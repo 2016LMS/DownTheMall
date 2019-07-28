@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>springBoot购物街</title>
+	<link rel="stylesheet" href="css/style1.css">
+	<link href="css/popup-box.css" rel="stylesheet" type="text/css" media="all" />
+	<!--<link href='//fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+	<link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+-->
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="Sign In And Sign Up Forms  Widget Responsive, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design" />
+		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+
+	</script><script src="js/jquery.min.js"></script>
+<script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/modernizr.custom.53451.js"></script> 
+ <script>
+						$(document).ready(function() {
+						$('.popup-with-zoom-anim').magnificPopup({
+							type: 'inline',
+							fixedContentPos: false,
+							fixedBgPos: true,
+							overflowY: 'auto',
+							closeBtnInside: true,
+							preloader: false,
+							midClick: true,
+							removalDelay: 300,
+							mainClass: 'my-mfp-zoom-in'
+						});
+																						
+						});
+</script>	
+		
+</head>
+<body>
+
+	<h1>登录/注册</h1>
+	<div class="w3layouts">
+		<div class="signin-agile">
+			<h2>登录</h2>
+			<form action="/user/do_login" method="post">
+				<input type="text" name="userName" class="name" placeholder="输入用户名" required="">
+				<input type="password" name="userPwd" class="password" placeholder="输入密码" required="">
+				<!--<ul>-->
+					<!--<li>-->
+						<!--<input type="checkbox" id="brand1" value="">-->
+						<!--<label for="brand1"><span></span>记住密码</label>-->
+					<!--</li>-->
+				<!--</ul>-->
+				<a href="change.html">注销/改密</a><br>
+
+				<div class="clear"></div>
+				<input type="submit" value="登录">
+
+			</form>
+		</div>
+
+		<div class="signup-agileinfo">
+			<h3>Springboot项目(购物街)</h3>
+
+			<div class="more">
+				<a class="book popup-with-zoom-anim button-isi zoomIn animated" data-wow-delay=".5s" href="#small-dialog">注册用户</a>
+			</div>
+			<div class="more">
+				<a class="book popup-with-zoom-anim button-isi zoomIn animated" data-wow-delay=".5s" href="../templates/product.html">改密/注销</a>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!--<div class="footer-w3l">-->
+
+ <!--</p>-->
+	<!--</div>-->
+	<div class="pop-up"> 
+	<div id="small-dialog" class="mfp-hide book-form">
+		<h3>注册表单 </h3>
+			<!--<form action="/user/do_regist" method="post">-->
+			<form id="form1" action="/user/do_regist" method="post">
+				<input type="text" id="userName" name="userName" placeholder="用户名" required=""/>
+				<div id="checkNameMsg" style="color: red"></div>
+				<input type="text" id="email" name="userEmail" class="email" placeholder="邮件" required=""/>
+				<input type="password" id="pwd" name="userPwd" class="password" placeholder="密码" required=""/>
+                <div id="checkPwd" style="color: red"></div>
+				<input type="password" name="Password" id="rePwd" class="password" placeholder="重复密码" required=""/>
+                <div id="checkRePwd" style="color: red"></div>
+				<input type="submit" value="点击注册">
+				<!--<button id="submit">注册</button>-->
+			</form>
+	</div>
+</div>	
+</body>
+
+<script>
+
+	$(function () {
+
+		$("#form1").submit(function () {
+
+			//获取到输入的密码信息
+			var password = $("#pwd").val();
+			//对其进行加密
+			var str = salt.charAt(6)+salt.charAt(0)+password+salt.charAt(1);
+
+			var newPwd =$.md5(str);
+			// alert(newPwd);
+
+			//将加密后的字符串再赋值给元素
+			$("#pwd").val(newPwd);
+
+		});
+
+		$("#userName").blur(function () {
+			//获取输入的值，发送到服务器中做查询
+            var userName = $(this).val();
+            if (userName == null) {
+                $("#checkNameMsg").html("用户名不能为空");
+            }
+			$.ajax({
+				url:"/user/do_checkUserName",
+				data:{userName:userName},
+				type:"post",
+				success:function (result) {
+					//数据解析
+					// alert(result);
+					if(result){
+						$("#checkNameMsg").html("用户名已经被注册了");
+					}else{
+						$("#checkNameMsg").html("用户名可用");
+					}
+				}
+			});
+		});
+
+		$("#rePwd").blur(function () {
+			var password1 = $(this).val();
+			var rePwd = $("#rePwd").val();
+			if (password1 != rePwd){
+				$("#checkRePwd").html("两次输入密码不一致");
+			}
+		})
+
+		$("#pwd").blur(function () {
+			var password = $(this).val();
+			if (password == null){
+				// $("#checkPwd").html("密码不能为空");
+				alert("密码不能为空！")
+			}
+		});
+	});
+
+</script>
+</html>

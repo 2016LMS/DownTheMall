@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxa.miaoshacd.dao.GoodsDao">
+
+
+    <resultMap id="selectMiaoShaGoodsByGoodsIdMap" type="miaoshaGoods">
+
+        <id column="miaoshagoods_id" property="miaoshagoods_id"></id>
+        <result column="miaosha_price" property="miaosha_price"></result>
+        <result column="miaosha_stock" property="miaosha_stock"></result>
+        <result column="begin_time" property="begin_time"></result>
+        <result column="end_time" property="end_time"></result>
+
+        <association  property="goods"  javaType="goods">
+            <id column="goods_id" property="goods_id"></id>
+            <result column="goods_name" property="goods_name"></result>
+            <result column="goods_price" property="goods_price"></result>
+            <result column="goods_desc" property="goods_desc"></result>
+            <result column="goods_stock" property="goods_stock"></result>
+            <result column="goods_img" property="goods_img"></result>
+
+        </association>
+
+    </resultMap>
+
+    <select id="selectGoods" resultType="goods">
+            select * from goods
+        </select>
+
+    <select id="selectGoodsCount" resultType="int">
+      select count(*) from goods
+    </select>
+
+    <select id="selectGoodsByPage" parameterType="com.gxa.miaoshacd.utility.Page" resultType="goods">
+            select * from goods limit #{pageIndex},#{pageSize}
+    </select>
+
+
+    <select id="selectMiaoShaGoodsByGoodsId" parameterType="int" resultMap="selectMiaoShaGoodsByGoodsIdMap">
+        select * from miaosha_goods m join goods g on m.goods_id = g.goods_id where g.goods_id = #{goodsId}
+    </select>
+
+    <select id="selectMiaoShaGoodsByMiaoShaGoodsId" parameterType="string" resultMap="selectMiaoShaGoodsByGoodsIdMap">
+        select * from miaosha_goods m join goods g on m.goods_id = g.goods_id where m.miaoshagoods_id = #{miaoshagoodsId}
+    </select>
+</mapper>
