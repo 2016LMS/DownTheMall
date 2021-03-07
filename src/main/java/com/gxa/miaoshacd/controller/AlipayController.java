@@ -149,7 +149,7 @@ public class AlipayController {
      * @param request
      * @throws Exception
      */
-    @RequestMapping("/notifyUrl")
+    @RequestMapping("/notifyurl")
     public void notifyUrl(HttpServletRequest request) throws Exception {
         System.out.printf("支付成功2");
         // 获取支付宝GET过来反馈信息
@@ -165,9 +165,8 @@ public class AlipayController {
             params.put(name, valueStr);
         }
 
-        boolean signVerified = AlipaySignature.rsaCheckV1(params, public_key, charset, signtype); // 调用SDK验证签名
 
-        if (signVerified) { // 验证成功 更新订单信息
+        if (AlipaySignature.rsaCheckV1(params, public_key, charset, signtype)) { // 调用SDK验证签名,验证成功 更新订单信息
             System.out.println("异步通知成功");
             // 商户订单号
             String out_trade_no = request.getParameter("out_trade_no");
